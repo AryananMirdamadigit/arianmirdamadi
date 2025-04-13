@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aryan Mirdamadi - Python Developer & AI Specialist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vazir-font/30.1.0/font-face.css">
+    <style>
+        .rtl {
+            direction: rtl;
+            font-family: 'Vazir', sans-serif;
+        }
+
+        .rtl .section-title::after {
+            margin-right: 0;
+            margin-left: auto;
+        }
+
+        .rtl .chat-messages .message.ai {
+            border-radius: 12px 0 12px 12px;
+        }
+
+        .rtl .chat-messages .message.user {
+            border-radius: 0 12px 12px 12px;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#4B9EFF', secondary: '#FF69B4' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css">
+    <style>
+        :where([class^="ri-"])::before {
+            content: "\f3c2";
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: #010314;
+            color: #fff;
+        }
+
+        .chat-widget {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .chat-button {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0460ca, #cdff69);
+            box-shadow: 0 4px 12px rgba(75, 158, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: absolute;
+            bottom: 5rem;
+            right: 0;
+            width: 320px;
+            background: #030525;
+            border: 1px solid rgba(75, 158, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(75, 158, 255, 0.1);
+        }
+
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message.ai {
+            background: rgba(75, 158, 255, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 12px 12px 12px 0;
+        }
+
+        .message.user {
+            background: rgba(255, 105, 180, 0.1);
+            padding: 0.75rem 1rem;
+            border-radius: 12px 12px 0 12px;
+            margin-left: auto;
+        }
+
+        .chat-input {
+            padding: 1rem;
+            border-top: 1px solid rgba(75, 158, 255, 0.1);
+        }
+
+        .chat-input form {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .hero-bg {
+            background: linear-gradient(to right, rgba(1, 3, 20, 0.9), rgba(1, 3, 20, 0.8)),
+                url('https://readdy.ai/api/search-image?query=abstract%20technology%20background%20with%20blue%20and%20pink%20neon%20lights%2C%20digital%20network%20connections%2C%20futuristic%20tech%20concept%20with%20flowing%20data%20streams%20and%20geometric%20shapes%2C%20dark%20background%20with%20vibrant%20colors%2C%20high-quality%20detailed%20render&width=1920&height=1080&seq=12345&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+            background-color: #010314;
+        }
+
+        .skill-card {
+            background: rgba(75, 158, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(75, 158, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(75, 158, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .project-card {
+            background: rgba(255, 105, 180, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 105, 180, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(255, 105, 180, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #4B9EFF, #cdff69);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #4B9EFF, #cdff69);
+            margin-top: 8px;
+        }
+
+        #canvas-container {
+            width: 300px;
+            height: 300px;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4B9EFF;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+    <!-- Navigation Menu -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#010314]/80 backdrop-blur-lg border-b border-[#4B9EFF20]">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <a href="#" class="text-2xl font-['Pacifico'] text-white hover:text-primary transition">
+                    Arian Mirdamadi
+                </a>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#about"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 relative group">
+                        About
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#skills"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 relative group">
+                        Skills
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#projects"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 relative group">
+                        Projects
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#education"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 relative group">
+                        Education
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                    <a href="#contact"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 relative group">
+                        Contact
+                        <span
+                            class="absolute bottom-0 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                    </a>
+                </div>
+                <!-- Language Selector -->
+                <div class="flex items-center gap-2">
+                    <div class="relative">
+                        <button id="languageButton"
+                            class="px-3 py-1 bg-[#4B9EFF20] text-primary rounded-full hover:bg-[#4B9EFF30] transition flex items-center">
+                            <i class="ri-global-line mr-2"></i>
+                            <span id="currentLang">English</span>
+                            <i class="ri-arrow-down-s-line ml-2"></i>
+                        </button>
+                        <div id="languageDropdown"
+                            class="hidden absolute top-full right-0 mt-2 bg-[#030525] border border-[#4B9EFF20] rounded-lg overflow-hidden shadow-lg z-50">
+                            <button onclick="changeLanguage('en')"
+                                class="w-full px-4 py-2 text-left hover:bg-[#4B9EFF20] transition">English</button>
+                            <button onclick="changeLanguage('fa')"
+                                class="w-full px-4 py-2 text-left hover:bg-[#4B9EFF20] transition">فارسی</button>
+                            <button onclick="changeLanguage('ar')"
+                                class="w-full px-4 py-2 text-left hover:bg-[#4B9EFF20] transition">العربية</button>
+                        </div>
+                    </div>
+                    <!-- Mobile Menu Button -->
+                    <button id="menuButton"
+                        class="md:hidden w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full text-primary hover:bg-[#4B9EFF20] transition">
+                        <i class="ri-menu-line"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-[#010314] border-t border-[#4B9EFF20]">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex flex-col space-y-4">
+                    <a href="#about" class="text-gray-300 hover:text-primary transition-all duration-300 py-2">About</a>
+                    <a href="#skills"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 py-2">Skills</a>
+                    <a href="#projects"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 py-2">Projects</a>
+                    <a href="#education"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 py-2">Education</a>
+                    <a href="#contact"
+                        class="text-gray-300 hover:text-primary transition-all duration-300 py-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <header class="hero-bg min-h-[100vh] flex items-center">
+        <div class="container mx-auto px-6 py-24 flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 mb-12 md:mb-0">
+                <h1 class="text-5xl md:text-6xl font-bold mb-4" data-translate="name">Aryan Mirdamadi</h1>
+                <h2 class="text-2xl md:text-3xl font-medium mb-8 gradient-text" data-translate="role">Python Developer &
+                    AI Specialist</h2>
+                <p class="text-lg text-gray-300 mb-8 max-w-lg">Transforming complex data into intelligent solutions
+                    through Python expertise and AI innovation.</p>
+                <div class="flex space-x-4">
+                    <a href="#contact"
+                        class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Contact
+                        Me</a>
+                    <a href="#projects"
+                        class="border border-primary text-primary px-6 py-3 !rounded-button font-medium hover:bg-primary hover:bg-opacity-10 transition whitespace-nowrap">View
+                        Projects</a>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 flex justify-center">
+                <div id="canvas-container" class="relative">
+                    <!-- Three.js will render here -->
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-[#020420]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 section-title" data-translate="about">About Me</h2>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="w-full md:w-2/3">
+                    <p class="text-lg text-gray-300 mb-6">
+                        With over 8 years of experience in software development, I specialize in Python programming and
+                        artificial intelligence solutions. My journey began with a fascination for algorithms and data
+                        structures, which eventually led me to explore the vast potential of machine learning and deep
+                        learning technologies.
+                    </p>
+                    <p class="text-lg text-gray-300 mb-6">
+                        I've had the privilege of working with startups and established enterprises alike, helping them
+                        leverage data-driven insights to solve complex business problems. My approach combines technical
+                        expertise with a deep understanding of business needs, ensuring that the solutions I develop not
+                        only work technically but also deliver tangible value.
+                    </p>
+                    <p class="text-lg text-gray-300">
+                        What sets me apart is my commitment to continuous learning and my ability to translate
+                        cutting-edge research into practical applications. I believe in writing clean, maintainable code
+                        and building systems that are both powerful and accessible to users.
+                    </p>
+                </div>
+                <div class="w-full md:w-1/3 flex flex-col gap-6">
+                    <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20]">
+                        <div class="w-12 h-12 flex items-center justify-center bg-[#4B9EFF10] rounded-full mb-4">
+                            <i class="ri-code-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Clean Code Advocate</h3>
+                        <p class="text-gray-400">I prioritize readability, maintainability, and efficiency in every line
+                            of code I write.</p>
+                    </div>
+                    <div class="bg-[#030525] p-6 rounded-lg border border-[#FF69B420]">
+                        <div class="w-12 h-12 flex items-center justify-center bg-[#FF69B410] rounded-full mb-4">
+                            <i class="ri-brain-line ri-xl text-secondary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">AI Enthusiast</h3>
+                        <p class="text-gray-400">Passionate about exploring and implementing the latest advancements in
+                            artificial intelligence.</p>
+                    </div>
+                    <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20]">
+                        <div class="w-12 h-12 flex items-center justify-center bg-[#4B9EFF10] rounded-full mb-4">
+                            <i class="ri-team-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Collaborative Leader</h3>
+                        <p class="text-gray-400">Experienced in leading technical teams and fostering a culture of
+                            innovation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-[#010314]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 section-title">Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="skill-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-6 flex items-center">
+                        <div class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-3">
+                            <i class="ri-code-s-slash-line ri-lg text-primary"></i>
+                        </div>
+                        Programming Languages
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Python (Advanced)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">JavaScript (Intermediate)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">SQL (Advanced)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">R (Intermediate)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Java (Basic)</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="skill-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-6 flex items-center">
+                        <div class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-3">
+                            <i class="ri-terminal-box-line ri-lg text-primary"></i>
+                        </div>
+                        Frameworks & Libraries
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">TensorFlow & Keras</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">PyTorch</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">NumPy & Pandas</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Scikit-learn</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Flask & Django</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="skill-card p-6 rounded-lg">
+                    <h3 class="text-xl font-semibold mb-6 flex items-center">
+                        <div class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-3">
+                            <i class="ri-tools-line ri-lg text-primary"></i>
+                        </div>
+                        Other Skills
+                    </h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Machine Learning</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Deep Learning</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Data Analysis & Visualization</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">AWS & GCP Cloud Services</span>
+                        </li>
+                        <li class="flex items-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-checkbox-circle-line text-primary"></i>
+                            </div>
+                            <span class="ml-2">Docker & Kubernetes</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-[#020420]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 section-title">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="project-card p-6 rounded-lg">
+                    <div class="mb-4">
+                        <img src="https://readdy.ai/api/search-image?query=AI-powered%20image%20recognition%20system%20with%20neural%20network%20visualization%2C%20futuristic%20interface%20showing%20image%20classification%20in%20action%2C%20dark%20theme%20with%20blue%20and%20pink%20highlights%2C%20technical%20dashboard%20with%20data%20flowing&width=600&height=400&seq=12346&orientation=landscape"
+                            alt="AI Image Recognition System" class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">AI Image Recognition System</h3>
+                    <p class="text-gray-400 mb-4">
+                        Developed a sophisticated image recognition system using convolutional neural networks that
+                        achieves 97% accuracy on benchmark datasets. The system can identify and classify objects in
+                        real-time video streams.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">TensorFlow</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">OpenCV</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Python</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary flex items-center hover:underline">
+                            <i class="ri-github-fill mr-2"></i> View Code
+                        </a>
+                        <a href="#" class="text-secondary flex items-center hover:underline">
+                            <i class="ri-external-link-line mr-2"></i> Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card p-6 rounded-lg">
+                    <div class="mb-4">
+                        <img src="https://readdy.ai/api/search-image?query=natural%20language%20processing%20system%20analyzing%20text%20data%2C%20AI%20chatbot%20interface%20with%20conversation%20flow%20visualization%2C%20machine%20learning%20model%20for%20sentiment%20analysis%2C%20dark%20theme%20with%20blue%20and%20pink%20highlights&width=600&height=400&seq=12347&orientation=landscape"
+                            alt="NLP-Powered Chatbot" class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">NLP-Powered Chatbot</h3>
+                    <p class="text-gray-400 mb-4">
+                        Built an intelligent conversational agent using natural language processing techniques. The
+                        chatbot can understand context, maintain conversation flow, and provide relevant responses to
+                        user queries.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">BERT</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Flask</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Python</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary flex items-center hover:underline">
+                            <i class="ri-github-fill mr-2"></i> View Code
+                        </a>
+                        <a href="#" class="text-secondary flex items-center hover:underline">
+                            <i class="ri-external-link-line mr-2"></i> Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card p-6 rounded-lg">
+                    <div class="mb-4">
+                        <img src="https://readdy.ai/api/search-image?query=predictive%20analytics%20dashboard%20for%20financial%20data%2C%20stock%20market%20prediction%20visualization%20with%20machine%20learning%20models%2C%20time%20series%20forecasting%20charts%2C%20dark%20theme%20with%20blue%20and%20pink%20highlights&width=600&height=400&seq=12348&orientation=landscape"
+                            alt="Predictive Analytics Dashboard" class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Predictive Analytics Dashboard</h3>
+                    <p class="text-gray-400 mb-4">
+                        Created a comprehensive analytics platform that uses machine learning to forecast business
+                        metrics. The dashboard provides interactive visualizations and actionable insights for
+                        decision-makers.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Scikit-learn</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Dash</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Pandas</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary flex items-center hover:underline">
+                            <i class="ri-github-fill mr-2"></i> View Code
+                        </a>
+                        <a href="#" class="text-secondary flex items-center hover:underline">
+                            <i class="ri-external-link-line mr-2"></i> Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="project-card p-6 rounded-lg">
+                    <div class="mb-4">
+                        <img src="https://readdy.ai/api/search-image?query=recommendation%20system%20for%20e-commerce%20products%2C%20personalized%20content%20suggestion%20algorithm%20visualization%2C%20collaborative%20filtering%20model%20with%20user%20preference%20mapping%2C%20dark%20theme%20with%20blue%20and%20pink%20highlights&width=600&height=400&seq=12349&orientation=landscape"
+                            alt="Recommendation Engine" class="w-full h-48 object-cover rounded-lg">
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">Recommendation Engine</h3>
+                    <p class="text-gray-400 mb-4">
+                        Designed and implemented a personalized recommendation system that analyzes user behavior to
+                        suggest relevant products. The engine uses collaborative filtering and content-based approaches.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">PyTorch</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Django</span>
+                        <span class="bg-[#4B9EFF20] text-primary px-3 py-1 rounded-full text-sm">Redis</span>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-primary flex items-center hover:underline">
+                            <i class="ri-github-fill mr-2"></i> View Code
+                        </a>
+                        <a href="#" class="text-secondary flex items-center hover:underline">
+                            <i class="ri-external-link-line mr-2"></i> Live Demo
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-[#010314]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 section-title">Education</h2>
+            <div class="space-y-8">
+                <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20] flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                        <span class="text-gray-400">2018 - 2020</span>
+                    </div>
+                    <div class="w-full md:w-3/4">
+                        <h3 class="text-xl font-semibold mb-2">Master of Science in Computer Science</h3>
+                        <h4 class="text-lg text-primary mb-2">Stanford University</h4>
+                        <p class="text-gray-400 mb-4">Specialized in Artificial Intelligence and Machine Learning</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Advanced Machine
+                                Learning</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Natural Language
+                                Processing</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Computer
+                                Vision</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Deep
+                                Learning</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20] flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                        <span class="text-gray-400">2014 - 2018</span>
+                    </div>
+                    <div class="w-full md:w-3/4">
+                        <h3 class="text-xl font-semibold mb-2">Bachelor of Science in Computer Engineering</h3>
+                        <h4 class="text-lg text-primary mb-2">Massachusetts Institute of Technology</h4>
+                        <p class="text-gray-400 mb-4">Minor in Mathematics</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Data Structures &
+                                Algorithms</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Database
+                                Systems</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Software
+                                Engineering</span>
+                            <span class="bg-[#4B9EFF10] text-gray-300 px-3 py-1 rounded-full text-sm">Linear
+                                Algebra</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20] flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                        <span class="text-gray-400">2022</span>
+                    </div>
+                    <div class="w-full md:w-3/4">
+                        <h3 class="text-xl font-semibold mb-2">TensorFlow Developer Certificate</h3>
+                        <h4 class="text-lg text-primary mb-2">Google</h4>
+                        <p class="text-gray-400 mb-4">Professional certification in building and deploying machine
+                            learning models using TensorFlow</p>
+                    </div>
+                </div>
+                <div class="bg-[#030525] p-6 rounded-lg border border-[#4B9EFF20] flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/4 mb-4 md:mb-0">
+                        <span class="text-gray-400">2021</span>
+                    </div>
+                    <div class="w-full md:w-3/4">
+                        <h3 class="text-xl font-semibold mb-2">AWS Certified Machine Learning - Specialty</h3>
+                        <h4 class="text-lg text-primary mb-2">Amazon Web Services</h4>
+                        <p class="text-gray-400 mb-4">Expertise in designing, implementing, and deploying machine
+                            learning solutions on AWS</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-[#020420]">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-12 section-title">Contact Me</h2>
+            <div class="flex flex-col md:flex-row gap-12">
+                <div class="w-full md:w-1/2">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-300 mb-2" data-translate="yourName">Name</label>
+                            <input type="text" id="name"
+                                class="w-full bg-[#030525] border border-[#4B9EFF20] rounded-lg p-3 text-white"
+                                placeholder="" data-translate="yourName">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email"
+                                class="w-full bg-[#030525] border border-[#4B9EFF20] rounded-lg p-3 text-white"
+                                placeholder="Your Email">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-300 mb-2">Message</label>
+                            <textarea id="message" rows="5"
+                                class="w-full bg-[#030525] border border-[#4B9EFF20] rounded-lg p-3 text-white"
+                                placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">Send
+                            Message</button>
+                    </form>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="bg-[#030525] p-8 rounded-lg border border-[#4B9EFF20] h-full">
+                        <h3 class="text-xl font-semibold mb-6">Contact Information</h3>
+                        <div class="space-y-6">
+                            <div class="flex items-start">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-4">
+                                    <i class="ri-mail-line text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 mb-1">Email</p>
+                                    <a href="mailto:aryan.mirdamadi@example.com"
+                                        class="text-white hover:text-primary transition">aryan.mirdamadi@example.com</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-4">
+                                    <i class="ri-linkedin-line text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 mb-1">LinkedIn</p>
+                                    <a href="https://linkedin.com/in/aryanmirdamadi"
+                                        class="text-white hover:text-primary transition">linkedin.com/in/aryanmirdamadi</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-4">
+                                    <i class="ri-github-line text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 mb-1">GitHub</p>
+                                    <a href="https://github.com/aryanmirdamadi"
+                                        class="text-white hover:text-primary transition">github.com/aryanmirdamadi</a>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div
+                                    class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full mr-4">
+                                    <i class="ri-twitter-line text-primary"></i>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 mb-1">Twitter</p>
+                                    <a href="https://twitter.com/aryanmirdamadi"
+                                        class="text-white hover:text-primary transition">@aryanmirdamadi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="py-10 bg-[#010314] border-t border-[#4B9EFF20]">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h2 class="text-2xl font-['Pacifico'] text-white mb-2">Arian Mirdamadi</h2>
+                    <p class="text-gray-400">Python Developer & AI Specialist</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#"
+                        class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full text-primary hover:bg-[#4B9EFF20] transition">
+                        <i class="ri-github-fill"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full text-primary hover:bg-[#4B9EFF20] transition">
+                        <i class="ri-linkedin-fill"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full text-primary hover:bg-[#4B9EFF20] transition">
+                        <i class="ri-twitter-fill"></i>
+                    </a>
+                    <a href="#"
+                        class="w-10 h-10 flex items-center justify-center bg-[#4B9EFF10] rounded-full text-primary hover:bg-[#4B9EFF20] transition">
+                        <i class="ri-mail-fill"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-[#4B9EFF10] text-center">
+                <p class="text-gray-400">&copy; 2025 Arian Mirdamadi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <div class="chat-button flex items-center justify-center" id="chatButton">
+            <i class="ri-message-3-line text-white text-xl"></i>
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h3 class="text-lg font-semibold">AI Assistant</h3>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai show">
+                    سلام 👀 من دستیار هوشمند آرین هستم.  هوشمندانه عمل کن .  هر سوالی داشتی از من بپرس 👋
+                </div>
+            </div>
+            <div class="chat-input">
+                <form id="chatForm">
+                    <input type="text"
+                        class="flex-1 bg-[#010314] border border-[#4B9EFF20] rounded-lg p-2 text-white text-sm"
+                        placeholder="Type your message...">
+                    <button type="submit" class="bg-primary text-white px-4 py-2 !rounded-button">
+                        <i class="ri-send-plane-fill"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        const translations = {
+            en: {
+                name: "Arian Mirdamadi",
+                role: "Python Developer & AI Specialist",
+                about: "About Me",
+                skills: "Skills",
+                projects: "Projects",
+                education: "Education",
+                contact: "Contact Me",
+                sendMessage: "Send Message",
+                yourName: "Your Name",
+                yourEmail: "Your Email",
+                yourMessage: "Your Message",
+                // Add more translations as needed
+            },
+            fa: {
+                name: "آرین میردامادی",
+                role: "توسعه دهنده پایتون و متخصص هوش مصنوعی",
+                about: "درباره من",
+                skills: "مهارت‌ها",
+                projects: "پروژه‌ها",
+                education: "تحصیلات",
+                contact: "تماس با من",
+                sendMessage: "ارسال پیام",
+                yourName: "نام شما",
+                yourEmail: "ایمیل شما",
+                yourMessage: "پیام شما",
+                // Add more translations as needed
+            },
+            ar: {
+                name: "آرين ميردامادي",
+                role: "مطور بايثون ومتخصص في الذكاء الاصطناعي",
+                about: "عني",
+                skills: "المهارات",
+                projects: "المشاريع",
+                education: "التعليم",
+                contact: "اتصل بي",
+                sendMessage: "إرسال الرسالة",
+                yourName: "اسمك",
+                yourEmail: "بريدك الإلكتروني",
+                yourMessage: "رسالتك",
+                // Add more translations as needed
+            }
+        };
+        function changeLanguage(lang) {
+            const elements = document.querySelectorAll('[data-translate]');
+            const direction = lang === 'en' ? 'ltr' : 'rtl';
+            document.documentElement.dir = direction;
+            document.body.classList.toggle('rtl', direction === 'rtl');
+            elements.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            // Three.js Python Logo Animation
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            // Create Python logo (simplified as two intertwined snakes)
+            const blueSnake = new THREE.Group();
+            const pinkSnake = new THREE.Group();
+            // Create blue snake
+            const blueGeometry = new THREE.TorusGeometry(1.2, 0.3, 16, 100);
+            const blueMaterial = new THREE.MeshBasicMaterial({
+                color: 0x4B9EFF,
+                transparent: true,
+                opacity: 0.9
+            });
+            const blueTorus = new THREE.Mesh(blueGeometry, blueMaterial);
+            blueSnake.add(blueTorus);
+            // Create pink snake
+            const pinkGeometry = new THREE.TorusGeometry(1.2, 0.3, 16, 100);
+            const pinkMaterial = new THREE.MeshBasicMaterial({
+                color: 0xFF69B4,
+                transparent: true,
+                opacity: 0.9
+            });
+            const pinkTorus = new THREE.Mesh(pinkGeometry, pinkMaterial);
+            pinkTorus.rotation.x = Math.PI / 2;
+            pinkSnake.add(pinkTorus);
+            // Add snakes to scene
+            scene.add(blueSnake);
+            scene.add(pinkSnake);
+            // Position camera
+            camera.position.z = 5;
+            // Animation loop
+            function animate() {
+                requestAnimationFrame(animate);
+                // Rotate snakes
+                blueSnake.rotation.x += 0.01;
+                blueSnake.rotation.y += 0.01;
+                pinkSnake.rotation.y += 0.01;
+                pinkSnake.rotation.z += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+            // Handle window resize
+            window.addEventListener('resize', function () {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        });
+        // Smooth scrolling for navigation links
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu functionality
+            const menuButton = document.getElementById('menuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuIcon = menuButton.querySelector('i');
+            let isMenuOpen = false;
+            menuButton.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                mobileMenu.classList.toggle('hidden');
+                menuIcon.className = isMenuOpen ? 'ri-close-line' : 'ri-menu-line';
+            });
+            // Close mobile menu when clicking a link
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIcon.className = 'ri-menu-line';
+                    isMenuOpen = false;
+                });
+            });
+            // Add scroll event listener for navbar background
+            let lastScroll = 0;
+            const navbar = document.querySelector('nav');
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll <= 0) {
+                    navbar.classList.remove('shadow-lg');
+                } else {
+                    navbar.classList.add('shadow-lg');
+                }
+                lastScroll = currentScroll;
+            });
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+        // Chat widget functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const chatButton = document.getElementById('chatButton');
+            const chatWindow = document.getElementById('chatWindow');
+            const chatMessages = document.getElementById('chatMessages');
+            const chatForm = document.getElementById('chatForm');
+            let isOpen = false;
+            chatButton.addEventListener('click', () => {
+                isOpen = !isOpen;
+                chatWindow.style.display = isOpen ? 'block' : 'none';
+            });
+            const responses = {
+                'skills': "Aryan specializes in Python, Machine Learning, and AI development. He's proficient in frameworks like TensorFlow, PyTorch, and scikit-learn.",
+                'education': "Aryan holds a Master's in Computer Science from Stanford University and a Bachelor's in Computer Engineering from MIT.",
+                'experience': "Aryan has over 8 years of experience in software development, focusing on AI and machine learning solutions.",
+                'projects': "Aryan has worked on several notable projects including an AI Image Recognition System, NLP-Powered Chatbot, Predictive Analytics Dashboard, and Recommendation Engine.",
+                'contact': "You can reach Aryan via email at aryan.mirdamadi@example.com or connect with him on LinkedIn and GitHub.",
+            };
+            chatForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = chatForm.querySelector('input');
+                const message = input.value.trim().toLowerCase();
+                if (!message) return;
+                // Add user message
+                addMessage(message, 'user');
+                input.value = '';
+                // Add AI response
+                setTimeout(() => {
+                    let response = "I'm not sure about that. Could you try asking about Ahmad's skills, education, experience, projects, or contact information?";
+                    for (const [key, value] of Object.entries(responses)) {
+                        if (message.includes(key)) {
+                            response = value;
+                            break;
+                        }
+                    }
+                    addMessage(response, 'ai');
+                }, 500);
+            });
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.textContent = text;
+                chatMessages.appendChild(messageDiv);
+                // Trigger animation
+                setTimeout(() => messageDiv.classList.add('show'), 100);
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+        // Form validation
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const message = document.getElementById('message').value;
+                    if (!name || !email || !message) {
+                        alert('Please fill in all fields');
+                        return;
+                    }
+                    if (!isValidEmail(email)) {
+                        alert('Please enter a valid email address');
+                        return;
+                    }
+                    // Here you would normally send the form data to a server
+                    alert('Thank you for your message! I will get back to you soon.');
+                    form.reset();
+                });
+            }
+            function isValidEmail(email) {
+                const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                return re.test(String(email).toLowerCase());
+            }
+        });
+    </script>
+</body>
+
+</html>
